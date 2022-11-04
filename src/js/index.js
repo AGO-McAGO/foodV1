@@ -12,7 +12,6 @@ GLOBAL STATE of the app.
 */
 
 const state = {};
-
 const controlSearch = async () => {
     //1. get query from the view.
     const query = searchView.getInput();
@@ -32,13 +31,27 @@ const controlSearch = async () => {
         //5. render results on UI.
         removeLoader(); // to remove the loader before rendering the results.
         searchView.renderResults(state.search.result);
-        console.log(state.search.result);
+        console.log(state.search.result); // when done, get rid of this log.
     }
 
 };
 
-// event listener for user search.
+
+// listener for user search.
 elements.searchSubmit.addEventListener( "submit", e => { // whenever a user submits a search term ....
     e.preventDefault(); // .. prevent the default behaviour then
     controlSearch(); // .. call the controlSearch function.
+} );
+
+
+// listener for pagination.
+elements.searchResultsPages.addEventListener("click", e => {
+    const btn = e.target.closest(".btn-inline");
+    
+    if (btn) {
+        const gotoPage = parseInt(btn.dataset.goto, 10); // "parseInt" to convert the number string to a number.
+        searchView.clearResults(); // clear results from the previous search.
+        searchView.renderResults(state.search.result, gotoPage); // results with pagination.
+    }
+    
 } );

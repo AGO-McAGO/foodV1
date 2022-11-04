@@ -16,6 +16,7 @@ export const clearInputField = () => {
 // to clear the results from the previous search.
 export const clearResults = () => {
     elements.resultsList.innerHTML = ""; // set to nothing, i.e. the li elements/tags will be deleted.
+    elements.searchResultsPages.innerHTML = ""; // to clear out unwanted button.
 };
 
 
@@ -61,7 +62,49 @@ const renderRecipe = recipi => {
 };
 
 
+// "page" parameter is the particular page number currently on, "type" refers to either button to go forward or go back.
+const createButton = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto=${type === "prev" ? page - 1 : page + 1}>
+        <span> Page ${type === "prev" ? page - 1 : page + 1} </span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === "prev" ? "left" : "right"}"></use>
+        </svg>
+    </button>
+`;
+
+
+// function to render buttons based on a particular page.
+const renderButtons = (page, numberofResults, resultsPerPage) => {
+    const pages = Math.ceil(numberofResults / resultsPerPage);
+
+    let button;
+
+    if (page === 1 && pages > 1) { // if on page1 and there's more than one page.
+        // only one button to the next page (i.e. page2).
+        button = createButton(page, "next");
+    } else if ( page < pages) { // if in one of the middle pages.
+        // both previous and next buttons.
+        button = `
+            ${createButton(page, "prev")}
+            ${createButton(page, "next")}
+        `;
+    } else if (page === pages && pages > 1) { // if on the last page and there's more than one page.
+        // only button to the previous page.
+        button = createButton(page, "prev");
+    }
+
+    elements.searchResultsPages.insertAdjacentHTML("afterbegin", button); // to insert the buttons.
+
+};
+
+
 // for all recipes.
-export const renderResults = recipes => {
-    recipes.forEach(renderRecipe); // loop through the recipes and call the "renderRecipe()" for each recipe.
+export const renderResults = (recipes, page =1, resultsPerPage = 10) => {
+    // render results of current page.
+    const start = (page - 1) * resultsPerPage; // from which recipe to start showing the results for a particular page.
+    const end = page * resultsPerPage; // where to end showing the results.
+    recipes.slice(start, end).forEach(renderRecipe); // loop through the recipes and call the "renderRecipe()" for each recipe.
+
+    // render pagination.
+    renderButtons(page, recipes.length, resultsPerPage);
 };

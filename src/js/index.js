@@ -1,5 +1,6 @@
 
 import Search from "./models/Search";
+import Recipe from "./models/Recipe";
 import * as searchView from "./views/searchView"; // to import all of the variables and functions from the search view.
 import { elements, removeLoader, renderLoader } from "./views/base"; // all DOM elements imported.
 
@@ -12,26 +13,32 @@ GLOBAL STATE of the app.
 */
 
 const state = {};
-const controlSearch = async () => {
-    //1. get query from the view.
+
+const controlSearch = async () => { // SEARCH CONTROLLER
+    // get query from the view.
     const query = searchView.getInput();
 
     if ( query ) { // if there is a query.
-        //2. create a new search object and add it to state.
+        // create a new search object and add it to state.
         state.search = new Search(query);
 
-        //3. prepare UI for results.
+        // prepare UI for results.
         searchView.clearInputField(); // to clear the input field.
         searchView.clearResults(); // clear results from the previous search.
         renderLoader(elements.searchResults); // to render the loader, while waiting for the results; "".
 
-        //4. search for recipes.
-        await state.search.getResults();
+        try {
+            // search for recipes.
+            await state.search.getResults();
+        
+            // render results on UI.
+            removeLoader(); // to remove the loader before rendering the results.
+            searchView.renderResults(state.search.result);
+        } catch (error) {
+            alert("An error occured!");
+            removeLoader(); // to get rid of the loader when there's no results.
+        }
 
-        //5. render results on UI.
-        removeLoader(); // to remove the loader before rendering the results.
-        searchView.renderResults(state.search.result);
-        console.log(state.search.result); // when done, get rid of this log.
     }
 
 };
@@ -55,3 +62,37 @@ elements.searchResultsPages.addEventListener("click", e => {
     }
     
 } );
+
+
+const controlRecipe = async () => { // RECIPE CONTROLLER
+    // get the hash (which will become the "id") of a recipe (from the url), then replace "#" with nothing inorder to get only the numbers from the hash.
+    const id = window.location.hash.replace("#", "");
+    console.log(id);
+
+    if ( id ) {
+        // prepare the UI for changes.
+
+        // create new recipe object.
+        state.recipe = new Recipe(id);
+
+        try {
+            // get recipe data.
+            await state.recipe.getRecipe();
+        
+            // calculate servings and time.
+            state.recipe.cookTime();
+            state.recipe.calculateServings();
+        
+            // render the recipe.
+            console.log(state.recipe);
+        } catch(error) {
+            alert("An error occured will processing recipe");
+        }
+        
+    }
+
+};
+
+
+// event listener to get hash from url when a recipe is clicked and event listener for whenever the page reloads. All events will call the "controlRecipe" function.
+[ "hashchange", "load" ].forEach( event => window.addEventListener( event, controlRecipe ) );

@@ -41,6 +41,7 @@ calculateServings() {
 parseIngredients() {
     const unitsLong = ["tablespoons", "tablespoon", "ounces", "ounce", "teaspoons", "teaspoon", "cups", "pounds"];
     const unitsShort = ["tbsp", "tbsp", "oz", "oz", "tsp", "tsp", "cup", "pound"];
+    const unitS = [ ...unitsShort, "kg", "g" ];
 
     // creating new ingredients based of the old one.
     const newIngredients = this.ingredients.map( el => {
@@ -55,7 +56,7 @@ parseIngredients() {
 
         // parse ingredients into count, unit and ingredient.
         const arrayIngredient = ingredient.split(" "); // to convert the ingredient into an array.
-        const unitIndex = arrayIngredient.findIndex( ell => unitsShort.includes(ell) ); // to find the index at which the unitsShort is located.
+        const unitIndex = arrayIngredient.findIndex( ell => unitS.includes(ell) ); // to find the index at which the unitsShort is located.
 
         let objIngredient;
         if (unitIndex > -1 ) { // there's a unit.

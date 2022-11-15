@@ -73,7 +73,10 @@ const controlRecipe = async () => { // RECIPE CONTROLLER
     if ( id ) {
         // prepare the UI for changes.
         recipeView.clearRecipe(); // clear the old recipe, making way  for the new one clicked upon.
-        renderLoader(elements.recipe); // render the loader with the parent (i.e. "elements.recipe") passed in so the loader knows where to display itself.
+        renderLoader(elements.recipe)// render the loader with the parent (i.e. "elements.recipe") passed in so the loader knows where to display itself.
+
+        // highlight the selected search item.
+        if (state.search) searchView.highlightSelected(id);
 
         // create new recipe object.
         state.recipe = new Recipe(id);

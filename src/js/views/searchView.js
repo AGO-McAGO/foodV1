@@ -20,6 +20,17 @@ export const clearResults = () => {
 };
 
 
+export const highlightSelected = id => {
+    // to remove the hightlight class from recipes that are not clicked upon.
+    const resultsArray = Array.from(document.querySelectorAll(".results__link"));
+    resultsArray.forEach(el => {
+        el.classList.remove("results__link--active");
+    } );
+
+    document.querySelector(`a[href="#${id}"]`).classList.add("results__link--active");
+};
+
+
 // to shorten the title with dots, if it's too long to be on one line.
 const limitRecipeTitle = (title, limit = 15) => {
     const newTitle = [];

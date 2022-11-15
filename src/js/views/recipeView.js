@@ -1,10 +1,29 @@
 
 import { elements } from "./base"; // all DOM elements imported.
+import { Fraction } from "fractional"; // to help with recipe calculations.
 
 
 // to clear up the old recipe inorder to make way for the new one the user just clicked upon.
 export const clearRecipe = () => {
     elements.recipe.innerHTML = "";
+};
+
+
+const formatCount = count => { // to calculate the recipe based on fractions.
+    if (count) {
+        const [int, dec] = count.toString().split(".").map(el => parseInt(el, 10));
+        if (!dec) return count;
+
+        if (int === 0) {
+            const fractn = new Fraction(count);
+            return `${fractn.numerator}/${fractn.denominator}`;
+        } else {
+            const fractn = new Fraction(count - int);
+            return `${int} ${fractn.numerator}/${fractn.denominator}`;
+        }
+
+    }
+    return "?";
 };
 
 
@@ -15,7 +34,7 @@ export const renderRecipe = recipi => {
                 <svg class="recipe__icon">
                     <use href="img/icons.svg#icon-check"></use>
                 </svg>
-                <div class="recipe__count">${ingredient.count}</div>
+                <div class="recipe__count">${formatCount(ingredient.count)}</div>
                 <div class="recipe__ingredient">
                     <span class="recipe__unit">${ingredient.unit}</span>
                     ${ingredient.ingredient}

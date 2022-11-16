@@ -31,6 +31,7 @@ export const renderRecipe = recipi => {
             <span> ${recipi.title} </span>
         </h1>
     </figure>
+
     <div class="recipe__details">
         <div class="recipe__info">
             <svg class="recipe__info-icon">
@@ -47,42 +48,40 @@ export const renderRecipe = recipi => {
             <span class="recipe__info-text"> servings</span>
 
             <div class="recipe__info-buttons">
-                <button class="btn-tiny">
-                    <svg>
-                        <use href="img/icons.svg#icon-circle-with-minus"></use>
-                    </svg>
-                </button>
-                <button class="btn-tiny">
-                    <svg>
-                        <use href="img/icons.svg#icon-circle-with-plus"></use>
-                    </svg>
-                </button>
-            </div>
-
+            <button class="btn-tiny">
+                <svg>
+                    <use href="img/icons.svg#icon-circle-with-minus"></use>
+                </svg>
+            </button>
+            <button class="btn-tiny">
+                <svg>
+                    <use href="img/icons.svg#icon-circle-with-plus"></use>
+                </svg>
+            </button>
         </div>
-        <button class="recipe__love">
-            <svg class="header__likes">
-                <use href="img/icons.svg#icon-heart-outlined"></use>
-            </svg>
-        </button>
+
     </div>
+    <button class="recipe__love">
+        <svg class="header__likes">
+            <use href="img/icons.svg#icon-heart-outlined"></use>
+        </svg>
+    </button>
+</div>
 
+<div class="recipe__ingredients">
+    <ul class="recipe__ingredient-list">
+    ${recipi.ingredients.map(el => createIngredient(el) ).join("") }
+    </ul>
 
+    <button class="btn-small recipe__btn">
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-shopping-cart"></use>
+        </svg>
+        <span>Add to shopping list</span>
+    </button>
+</div>
 
-    <div class="recipe__ingredients">
-        <ul class="recipe__ingredient-list">
-        ${recipi.ingredients.map(el => createIngredient(el) ).join("") }
-        </ul>
-
-        <button class="btn-small recipe__btn">
-            <svg class="search__icon">
-                <use href="img/icons.svg#icon-shopping-cart"></use>
-            </svg>
-            <span>Add to shopping list</span>
-        </button>
-    </div>
-
-    <div class="recipe__directions">
+<div class="recipe__directions">
         <h2 class="heading-2">How to cook it</h2>
         <p class="recipe__directions-text">
             This recipe was carefully designed and tested by
@@ -96,7 +95,6 @@ export const renderRecipe = recipi => {
 
         </a>
     </div>
-    
     `;
     // to insert the template into the webpage.
     elements.recipe.insertAdjacentHTML("afterbegin", recipeMarkup);

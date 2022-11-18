@@ -104,3 +104,23 @@ const controlRecipe = async () => { // RECIPE CONTROLLER
 
 // event listener to get hash from url when a recipe is clicked and event listener for whenever the page reloads. All events will call the "controlRecipe" function.
 [ "hashchange", "load" ].forEach( event => window.addEventListener( event, controlRecipe ) );
+
+
+// handling recipe button clicks.
+elements.recipe.addEventListener("click", e => {
+    // if button clicked upon is the button decrease or any child elements of the button decrease (which is what ".btn-decrease *" means).
+    if ( e.target.matches(".btn-decrease, .btn-decrease *") ) {
+
+        // to decrease the servings only if the servings is more/greater than 1.
+        if ( state.recipe.servings > 1 ) {
+            state.recipe.updateServings("decrease");
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+
+    } else if ( e.target.matches(".btn-increase, .btn-increase *") ) { // if button clicked upon is the button decrease or any child elements of the button decrease
+        state.recipe.updateServings("increase");
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+    console.log(state.recipe);
+
+} );

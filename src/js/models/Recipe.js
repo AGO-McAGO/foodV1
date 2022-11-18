@@ -98,4 +98,17 @@ parseIngredients() {
     this.ingredients = newIngredients;
 }
 
+updateServings (type) { // to update the servings as users click upon the increase or decrease servings.
+    // servings: if the type of updating servings is to "decrease" then minus 1 else add 1.
+    const newServings = type === "decrease" ? this.servings - 1 : this.servings + 1;
+
+    // ingredients
+    this.ingredients.forEach( ingredient => {
+        //the new ingredient count is set/equal to the old ingredient count multiplied by the newServings divided by the old servings (i.e. this.servings).
+        ingredient.count *= (newServings / this.servings);
+    } );
+
+    this.servings = newServings; // updating the servings.
+}
+
 };

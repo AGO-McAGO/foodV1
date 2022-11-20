@@ -1,6 +1,7 @@
 
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
+import List from "./models/List";
 import * as searchView from "./views/searchView"; // to import all of the variables and functions from the search view file.
 import * as recipeView from "./views/recipeView"; // to import all of the variables and functions from the recipe view file.
 import { elements, removeLoader, renderLoader } from "./views/base"; // all DOM elements imported.
@@ -121,6 +122,6 @@ elements.recipe.addEventListener("click", e => {
         state.recipe.updateServings("increase");
         recipeView.updateServingsIngredients(state.recipe);
     }
-    console.log(state.recipe);
+    
 
 } );

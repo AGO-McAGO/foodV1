@@ -24,5 +24,5 @@ export const renderItem = item => { // to render the item to the DOM (i.e. to th
 
 export const deleteItem = id => { // to delete an item from the shopping list.
     const item = document.querySelector(`[data-itemid="${id}"]`);
-    item.parentElement.removeChild(item); // to delete the item.
+    if (item) item.parentElement.removeChild(item); // to delete the item.
 };

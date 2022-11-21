@@ -2,8 +2,9 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
 import List from "./models/List";
-import * as searchView from "./views/searchView"; // to import all of the variables and functions from the search view file.
-import * as recipeView from "./views/recipeView"; // to import all of the variables and functions from the recipe view file.
+import * as searchView from "./views/searchView";
+import * as recipeView from "./views/recipeView";
+import * as listView from "./views/listView";
 import { elements, removeLoader, renderLoader } from "./views/base"; // all DOM elements imported.
 
 /*
@@ -107,6 +108,35 @@ const controlRecipe = async () => { // RECIPE CONTROLLER
 [ "hashchange", "load" ].forEach( event => window.addEventListener( event, controlRecipe ) );
 
 
+// recipe list controller.
+const controlList = () => {
+    if (!state.list) state.list = new List(); // creating a new list if there's none.
+
+    // add each ingredient to the list and UI.
+    state.recipe.ingredients.forEach( el => {
+        const item = state.list.addItem( el.count, el.unit, el.ingredient );
+        listView.renderItem(item); // display to the UI.
+    } );
+};
+
+
+// handler to delete and update list item events.
+elements.shoppingList.addEventListener("click", e => {
+    const id = e.target.closest(".shopping__item").dataset.itemid; // to get the id of the item clicked up.
+
+    // handle the delete button.
+    if (e.target.matches(".shopping__delete, .shopping__delete *") ) {
+        state.list.deleteItem(id); // delete from state.
+        listView.deleteItem(id); // delete from UI.
+
+        // handle the count update.
+    } else if ( e.target.matches(".shopping__count-value") ) {
+        const val = parseFloat(e.target.value, 10); // to get the value of the element that's clicked.
+        state.list.updateCount(id, val);
+    }
+
+} );
+
 // handling recipe button clicks.
 elements.recipe.addEventListener("click", e => {
     // if button clicked upon is the button decrease or any child elements of the button decrease (which is what ".btn-decrease *" means).
@@ -121,7 +151,9 @@ elements.recipe.addEventListener("click", e => {
     } else if ( e.target.matches(".btn-increase, .btn-increase *") ) { // if button clicked upon is the button decrease or any child elements of the button decrease
         state.recipe.updateServings("increase");
         recipeView.updateServingsIngredients(state.recipe);
+    } else if ( e.target.matches(".recipe__btn--add, .recipe__btn--add *") ) { // when clicked upon ....
+        controlList(); // call the control list function.
     }
-    
+
 
 } );

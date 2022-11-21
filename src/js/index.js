@@ -2,10 +2,12 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
 import List from "./models/List";
+import Likes from "./models/Likes";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
 import * as listView from "./views/listView";
 import { elements, removeLoader, renderLoader } from "./views/base"; // all DOM elements imported.
+
 
 /*
 GLOBAL STATE of the app.
@@ -108,8 +110,7 @@ const controlRecipe = async () => { // RECIPE CONTROLLER
 [ "hashchange", "load" ].forEach( event => window.addEventListener( event, controlRecipe ) );
 
 
-// recipe list controller.
-const controlList = () => {
+const controlList = () => { // RECIPE LIST CONTROLLER
     if (!state.list) state.list = new List(); // creating a new list if there's none.
 
     // add each ingredient to the list and UI.
@@ -137,6 +138,37 @@ elements.shoppingList.addEventListener("click", e => {
 
 } );
 
+
+const controlLike = () => { // LIKES CONTROLLER
+    if ( !state.likes) state.likes = new Likes(); // to create a new likes object if not already available.
+    const currentId = state.recipe.id; // the current recipe id.
+
+    if ( !state.likes.isLiked(currentId) ) { // check to ensure user has not liked the current recipe.
+        // .... then add like to the state.
+        const newLike = state.likes.addLike(
+            currentId,
+            state.recipe.title,
+            state.recipe.author,
+            state.recipe.img
+        );
+
+        // toggle the like button.
+
+        // add like to the UI list.
+        console.log(state.likes);
+    } else { // user has already liked the current recipe.
+        // .... then remove like from the state.
+        state.likes.deleteLike(currentId);
+
+        // toggle the like button.
+
+        // remove like from the UI list.
+        console.log(state.likes);
+    }
+
+};
+
+
 // handling recipe button clicks.
 elements.recipe.addEventListener("click", e => {
     // if button clicked upon is the button decrease or any child elements of the button decrease (which is what ".btn-decrease *" means).
@@ -152,7 +184,9 @@ elements.recipe.addEventListener("click", e => {
         state.recipe.updateServings("increase");
         recipeView.updateServingsIngredients(state.recipe);
     } else if ( e.target.matches(".recipe__btn--add, .recipe__btn--add *") ) { // when clicked upon ....
-        controlList(); // call the control list function.
+        controlList(); // call the control list function; to add ingredients to shopping list.
+    } else if ( e.target.matches(".recipe__love, .recipe__love *") ) { // when clicked upon ....
+        controlLike(); // to 
     }
 
 

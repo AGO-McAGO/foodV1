@@ -18,7 +18,7 @@ export default class Likes {
 
     isLiked(id) { // method to indicate/show the user that they've liked a particular recipe.
         // check if the id of the element is equal to the passed in id; in order to find the index of the id passed in.
-        return this.items.findIndex(el => el.id === id) !== -1; 
+        return this.likes.findIndex(el => el.id === id) !== -1; 
     };
 
     getNumberLikes(id) { // to get the liked recipe.

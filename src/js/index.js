@@ -192,7 +192,7 @@ elements.recipe.addEventListener("click", e => {
     } else if ( e.target.matches(".recipe__btn--add, .recipe__btn--add *") ) { // when clicked upon ....
         controlList(); // call the control list function; to add ingredients to shopping list.
     } else if ( e.target.matches(".recipe__love, .recipe__love *") ) { // when clicked upon ....
-        controlLike(); // to 
+        controlLike();
     }
 
 

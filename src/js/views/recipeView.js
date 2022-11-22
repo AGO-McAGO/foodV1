@@ -28,7 +28,7 @@ const formatCount = count => { // to calculate the recipe based on fractions.
 
 
 // to display only one recipe.
-export const renderRecipe = recipi => {
+export const renderRecipe = ( recipi, isLiked ) => {
     const createIngredient = ingredient => `
     <li class="recipe__item">
                 <svg class="recipe__icon">
@@ -81,7 +81,8 @@ export const renderRecipe = recipi => {
         </div>
         <button class="recipe__love">
             <svg class="header__likes">
-                <use href="img/icons.svg#icon-heart-outlined"></use>
+            <!-- if the recipe "isLiked" it will be just "icon-heart" but if it's not liked then it'll be the "-outlined". -->
+                <use href="img/icons.svg#icon-heart${isLiked ? "" : "-outlined"}"></use>
             </svg>
         </button>
     </div>

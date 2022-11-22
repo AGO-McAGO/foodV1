@@ -27,12 +27,12 @@ export const highlightSelected = id => {
         el.classList.remove("results__link--active");
     } );
     
-    document.querySelector(`a[href="#${id}"]`).classList.add("results__link--active");
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add("results__link--active"); // to select all results link.
 };
 
 
 // to shorten the title with dots, if it's too long to be on one line.
-const limitRecipeTitle = (title, limit = 15) => {
+export const limitRecipeTitle = (title, limit = 15) => {
     const newTitle = [];
     if (title.length > limit) {
         /*

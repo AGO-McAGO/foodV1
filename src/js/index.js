@@ -139,8 +139,6 @@ elements.shoppingList.addEventListener("click", e => {
 } );
 
 
-state.likes = new Likes();
-likesView.toggleLikeMenu( state.likes.getNumberLikes() );
 const controlLike = () => { // LIKES CONTROLLER
     if ( !state.likes) state.likes = new Likes(); // to create a new likes object if not already available.
     const currentId = state.recipe.id; // the current recipe id.
@@ -166,6 +164,15 @@ const controlLike = () => { // LIKES CONTROLLER
     likesView.toggleLikeMenu( state.likes.getNumberLikes() ); // to show likes menu only when there are liked recipe.
 
 };
+
+
+// restore liked recipe on page load.
+window.addEventListener("load", () => {
+    state.likes = new Likes(); // create new likes object, empty on page reload.
+    state.likes.readStorage(); // to restore the likes from localStorage.
+    likesView.toggleLikeMenu( state.likes.getNumberLikes() ); // toggle button; if there are likes, the button is displayed.
+    state.likes.likes.forEach( like => likesView.renderLike(like) ); // render the existing liked recipes in the menu.
+} );
 
 
 // handling recipe button clicks.
